@@ -1,7 +1,8 @@
 import './App.css';
 import {type DataType, ExtraPractice1} from "./ExtraPractice_1.tsx";
+import {Todolists} from "./Todolists.tsx";
 
-export const App = ()=> {
+export const App = () => {
 
     const data1: DataType = {
         title: "What to do",
@@ -57,7 +58,7 @@ export const App = ()=> {
             'Ralphie Hebert',
         ]
     }
-    const data2: DataType =   {
+    const data2: DataType = {
         title: "What to learn",
         tasks: [
             {taskId: 1, title: "HTML&CSS", isDone: true},
@@ -119,8 +120,9 @@ export const App = ()=> {
 
     return (
         <div className="App">
-            <ExtraPractice1 data={data1} />
-            <ExtraPractice1 data={data2} />
+            <Todolists/>
+            <ExtraPractice1 data={data1}/>
+            <ExtraPractice1 data={data2}/>
         </div>
     );
 }
