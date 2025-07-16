@@ -1,4 +1,4 @@
-import {type ChangeEvent, type KeyboardEvent, useState} from "react";
+import {type KeyboardEvent, type ReactNode, useRef, useState} from "react";
 import type {FilterValuesType} from "./Todolists.tsx";
 
 type Task = {
@@ -12,13 +12,15 @@ type PropsType = {
     tasks: Task[]
     removeTask: (taskId: number) => void
     addTask: (value: string) => void
+    children: ReactNode
 }
 
 export const Todolist = (props: PropsType) => {
 
-    const {title, tasks, removeTask, addTask} = props
+    const {title, tasks, removeTask, addTask, children} = props
 
-    const [value, setValue] = useState<string>('')
+    // const [value, setValue] = useState<string>('')
+    const inputRef = useRef<HTMLInputElement>(null)
 
     const [filter, setFilter] = useState<FilterValuesType>("all");
 
@@ -36,16 +38,14 @@ export const Todolist = (props: PropsType) => {
         setFilter(value);
     }
 
-    const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue(e.currentTarget.value)
-    }
-
     const addTaskHandler = () => {
-        const trimmedValue = value?.trim()
-        if (trimmedValue !== '') {
+        const trimmedValue = inputRef.current?.value.trim()
+        if (trimmedValue && trimmedValue !== '') {
             addTask(trimmedValue)
-            setValue('')
-        } else return
+            if (inputRef.current) {
+                inputRef.current.value = ''
+            }
+        } else console.log('error')
     }
 
 
@@ -60,7 +60,8 @@ export const Todolist = (props: PropsType) => {
     return <div>
         <h3>{title}</h3>
         <div>
-            <input value={value} onChange={onChangeInputHandler} onKeyUp={onKeyPressHandler}/>
+            {/*<input value={value} onChange={onChangeInputHandler} onKeyUp={onKeyPressHandler}/>*/}
+            <input ref={inputRef} onKeyUp={onKeyPressHandler}/>
             <button onClick={addTaskHandler}>+</button>
         </div>
         <ul>
@@ -92,9 +93,7 @@ export const Todolist = (props: PropsType) => {
                 Completed
             </button>
         </div>
-        <div>
-            <div>Many intresting information</div>
-        </div>
+        {children}
     </div>
 }
 

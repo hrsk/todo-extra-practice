@@ -28,7 +28,11 @@ export const Todolists = () => {
             <Todolist title="What to learn"
                       tasks={tasks}
                       removeTask={removeTask}
-                      addTask={addTask}/>
+                      addTask={addTask}>
+                <div>
+                    <div style={{color: 'lightpink'}}>Many interesting information</div>
+                </div>
+            </Todolist>
         </div>
     );
 }
