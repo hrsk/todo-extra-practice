@@ -1,4 +1,4 @@
-import {type KeyboardEvent, type ReactNode, useRef, useState} from "react";
+import {type KeyboardEvent, type ReactNode, useRef} from "react";
 import type {FilterValuesType} from "./Todolists.tsx";
 
 type Task = {
@@ -12,31 +12,16 @@ type PropsType = {
     tasks: Task[]
     removeTask: (taskId: number) => void
     addTask: (value: string) => void
+    changeFilter: (filter: FilterValuesType) => void
     children: ReactNode
 }
 
 export const Todolist = (props: PropsType) => {
 
-    const {title, tasks, removeTask, addTask, children} = props
+    const {title, tasks, removeTask, addTask, changeFilter, children} = props
 
     // const [value, setValue] = useState<string>('')
     const inputRef = useRef<HTMLInputElement>(null)
-
-    const [filter, setFilter] = useState<FilterValuesType>("all");
-
-
-    let filteredTasks = tasks;
-
-    if (filter === "active") {
-        filteredTasks = tasks.filter(t => !t.isDone);
-    }
-    if (filter === "completed") {
-        filteredTasks = tasks.filter(t => t.isDone);
-    }
-
-    function changeFilter(value: FilterValuesType) {
-        setFilter(value);
-    }
 
     const addTaskHandler = () => {
         const trimmedValue = inputRef.current?.value.trim()
@@ -66,7 +51,7 @@ export const Todolist = (props: PropsType) => {
         </div>
         <ul>
             {
-                filteredTasks.map(t => <li key={t.id}>
+                tasks.map(t => <li key={t.id}>
                     <input type="checkbox" checked={t.isDone}/>
                     <span>{t.title}</span>
                     <button onClick={() => {
