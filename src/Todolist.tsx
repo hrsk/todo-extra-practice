@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {type ChangeEvent, type KeyboardEvent, useState} from "react";
 import type {FilterValuesType} from "./Todolists.tsx";
 
 type Task = {
@@ -11,11 +11,14 @@ type PropsType = {
     title: string
     tasks: Task[]
     removeTask: (taskId: number) => void
+    addTask: (value: string) => void
 }
 
 export const Todolist = (props: PropsType) => {
 
-    const {title, tasks, removeTask} = props
+    const {title, tasks, removeTask, addTask} = props
+
+    const [value, setValue] = useState<string>('')
 
     const [filter, setFilter] = useState<FilterValuesType>("all");
 
@@ -33,11 +36,32 @@ export const Todolist = (props: PropsType) => {
         setFilter(value);
     }
 
+    const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue(e.currentTarget.value)
+    }
+
+    const addTaskHandler = () => {
+        const trimmedValue = value?.trim()
+        if (trimmedValue !== '') {
+            addTask(trimmedValue)
+            setValue('')
+        } else return
+    }
+
+
+    const onKeyPressHandler = (e: KeyboardEvent) => {
+        const {key} = e
+
+        if (key === 'Enter') {
+            addTaskHandler()
+        }
+    }
+
     return <div>
         <h3>{title}</h3>
         <div>
-            <input/>
-            <button>+</button>
+            <input value={value} onChange={onChangeInputHandler} onKeyUp={onKeyPressHandler}/>
+            <button onClick={addTaskHandler}>+</button>
         </div>
         <ul>
             {
@@ -67,6 +91,9 @@ export const Todolist = (props: PropsType) => {
             }}>
                 Completed
             </button>
+        </div>
+        <div>
+            <div>Many intresting information</div>
         </div>
     </div>
 }

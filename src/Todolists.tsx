@@ -4,7 +4,7 @@ import {Todolist} from './Todolist';
 
 export type FilterValuesType = "all" | "active" | "completed";
 
-export const Todolists = ()=> {
+export const Todolists = () => {
 
     const [tasks, setTasks] = useState([
         {id: 1, title: "HTML&CSS", isDone: true},
@@ -19,12 +19,16 @@ export const Todolists = ()=> {
         setTasks(filteredTasks);
     }
 
+    const addTask = (value: string) => {
+        setTasks([{id: Math.random(), title: value, isDone: false}, ...tasks])
+    }
 
     return (
         <div className="App">
             <Todolist title="What to learn"
                       tasks={tasks}
-                      removeTask={removeTask}/>
+                      removeTask={removeTask}
+                      addTask={addTask}/>
         </div>
     );
 }
